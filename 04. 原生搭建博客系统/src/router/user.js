@@ -14,11 +14,12 @@ const handleUserRouter = async (req, res) => {
     
     // 登录
     if (method === 'POST' && path === '/api/user/login') {
-        let isSuccess = await  loginCheck(req.body);
-        if (isSuccess) {
-            return new SuccessModule('登录成功');
+        let result = await  loginCheck(req.body);
+        if (!result.length) {
+            return new ErrorModule('登录失败');
         }
-        return new ErrorModule('登录失败');
+        return new SuccessModule(result[0], '登录成功');
+        
     }
 };
 

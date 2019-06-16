@@ -1,11 +1,10 @@
 /**
  * Created by MonTage_fz on 2019/6/13
  */
+const {exec} = require('../db/mySql');
 const loginCheck = ({username, password}) => {
-    if (username === 'zhangSan' && password === 123) {
-        return true;
-    }
-    return false;
+    const sql = `select username, password from users where username='${username}' and password='${password}'`;
+    return exec(sql);
 };
 
 module.exports = {
