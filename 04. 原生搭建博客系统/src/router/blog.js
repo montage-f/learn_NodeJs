@@ -21,7 +21,6 @@ const handleBlogRouter = (req, res) => {
     if (method === 'GET' && path === '/api/blog/list') {
         const {author, keyword} = query;
         const data = getList(author, keyword);
-        
         return new SuccessModule(data);
     }
     // 获取-博客-内容
@@ -40,18 +39,18 @@ const handleBlogRouter = (req, res) => {
     if (method === 'POST' && path === '/api/blog/update') {
         const isSuccess = updateBlog(req.body);
         if (isSuccess) {
-            return new SuccessModule();
+            return new SuccessModule('更新成功');
         } else {
-            return new ErrorModule();
+            return new ErrorModule('更新失败');
         }
     }
     // 删除-博客-内容
     if (method === 'POST' && path === '/api/blog/del') {
         const isSuccess = delBlog(req.body);
         if (isSuccess) {
-            return new SuccessModule();
+            return new SuccessModule('删除成功!');
         } else {
-            return new ErrorModule();
+            return new ErrorModule('删除失败!');
         }
     }
 };
