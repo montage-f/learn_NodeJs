@@ -13,7 +13,15 @@ const getPostData = require('./src/getPostData');
 const serverHandle = (req, res) => {
     // 设置返回格式 JSON
     res.setHeader('Content-type', 'application/json');
-    //
+    
+    // 解析cookie,
+    req.cookie = {};
+    const cookieStr = req.headers.cookie || '';  // k1=v1; k2=v2; k3=v3
+    cookieStr.split(';').forEach(v => {
+        const [key, value] = v.split('=');
+        req.cookie[key] = value;
+    });
+    
     getPostData(req).then(async (postData) => {
         
         // 拿到前端交给后端的参数, 并放入到请求body里面
