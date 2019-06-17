@@ -22,6 +22,11 @@ const serverHandle = (req, res) => {
         req.cookie[key] = value;
     });
     
+    
+    // 解析session
+    
+    
+    
     getPostData(req).then(async (postData) => {
         
         // 拿到前端交给后端的参数, 并放入到请求body里面

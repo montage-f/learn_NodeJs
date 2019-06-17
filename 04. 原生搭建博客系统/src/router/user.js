@@ -20,8 +20,8 @@ const handleUserRouter = async (req, res) => {
     const query = queryString.parse(url.split('?')[1]);
     
     // 登录
-    if (method === 'POST' && path === '/api/user/login') {
-        let result = await login(req.body);
+    if (method === 'GET' && path === '/api/user/login') {
+        let result = await login(query);
         if (!result.length) {
             return new ErrorModule('登录失败');
         }
