@@ -7,7 +7,7 @@ module.exports = (req, res) => new Promise((resolve, reject) => {
     const path = url.split('?')[0];
     
     // 只有下面两个接口可以使用get请求
-    const getUrl = ['/api/blog/list', '/api/blog/detail','/api/user/login'];
+    const getUrl = ['/api/blog/list', '/api/blog/detail','/api/user/login','/api/user/login-test'];
     if (method !== 'POST' && !getUrl.includes(path)) {
         reject({
             msg: '该接口只能使用POST请求'

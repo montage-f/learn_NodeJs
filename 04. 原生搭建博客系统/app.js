@@ -10,6 +10,15 @@ const handleUserRouter = require('./src/router/user');
 
 const getPostData = require('./src/getPostData');
 
+// 获取cookie过期时间
+const getCookieExpires = () => {
+    const d = new Date();
+    d.setTime(d.getTime() + (24 * 60 * 60 * 1000));
+    return d.toLocaleString();
+};
+
+// session 数据
+let SESSION_DATA = {};
 
 const serverHandle = (req, res) => {
     // 设置返回格式 JSON
@@ -23,9 +32,19 @@ const serverHandle = (req, res) => {
         req.cookie[key] = value;
     });
     
-    
     // 解析session
-    
+    let needSetCookie = false;
+    let userId = req.cookie.userId;
+    if (userId) {
+        if (!SESSION_DATA[userId]) {
+            SESSION_DATA[userId] = {};
+        }
+    } else {
+        needSetCookie = true;
+        userId = `${Date.now()}_${Math.random()}`;
+        SESSION_DATA[userId] = {};
+    }
+    req.session = SESSION_DATA[userId];
     
     
     getPostData(req).then(async (postData) => {
@@ -35,6 +54,9 @@ const serverHandle = (req, res) => {
         // 博客路由
         const blog = await handleBlogRouter(req, res);
         if (blog) {
+            if (needSetCookie) {
+                res.setHeader('Set-Cookie', `userId=${userId}; path=/; httpOnly; expires=${getCookieExpires()}`);
+            }
             res.end(JSON.stringify(blog));
             return;
         }
@@ -42,6 +64,9 @@ const serverHandle = (req, res) => {
         // 用户路由
         const user = await handleUserRouter(req, res);
         if (user) {
+            if (needSetCookie) {
+                res.setHeader('Set-Cookie', `userId=${userId}; path=/; httpOnly; expires=${getCookieExpires()}`);
+            }
             res.end(JSON.stringify(user));
             return;
         }

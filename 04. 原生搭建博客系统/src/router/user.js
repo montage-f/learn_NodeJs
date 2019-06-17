@@ -29,9 +29,22 @@ const handleUserRouter = async (req, res) => {
         // path=/ 表示 / 下面的所有路径都可以获取cookie
         // httpOnly 表示, 只允许服务端修改cookie
         // expires 表示 设置cookie的过期时间
-        res.setHeader('Set-Cookie', `username=${req.body.username}; path=/; httpOnly; expires=${getCookieExpires()}`);
+        
+        // res.setHeader('Set-Cookie', `username=${req.body.username}; path=/; httpOnly; expires=${getCookieExpires()}`);
+        
+        // 设置session值
+        req.session.username = result[0].username;
+        req.session.password = result[0].password;
+        console.log(`req.session`, req.session);
         return new SuccessModule(result[0], '登录成功');
         
+    }
+    
+    if (method === 'GET' && path === '/api/user/login-test') {
+        if (req.session.username) {
+            return new SuccessModule(req.session, '登录成功');
+        }
+        return new ErrorModule('登录失败');
     }
 };
 
