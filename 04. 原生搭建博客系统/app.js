@@ -10,6 +10,8 @@ const handleUserRouter = require('./src/router/user');
 
 const getPostData = require('./src/getPostData');
 
+const {redis_set, redis_get} = require('./src/db/Redis');
+
 // 获取cookie过期时间
 const getCookieExpires = () => {
     const d = new Date();
@@ -17,10 +19,8 @@ const getCookieExpires = () => {
     return d.toLocaleString();
 };
 
-// session 数据
-let SESSION_DATA = {};
 
-const serverHandle = (req, res) => {
+const serverHandle = async (req, res) => {
     // 设置返回格式 JSON
     res.setHeader('Content-type', 'application/json');
     
@@ -35,20 +35,22 @@ const serverHandle = (req, res) => {
     // 解析session
     let needSetCookie = false;
     let userId = req.cookie.userId;
-    if (userId) {
-        if (!SESSION_DATA[userId]) {
-            SESSION_DATA[userId] = {};
-        }
-    } else {
+    if (!userId) {
         needSetCookie = true;
         userId = `${Date.now()}_${Math.random()}`;
-        SESSION_DATA[userId] = {};
+        redis_set(userId, {});
     }
-    req.session = SESSION_DATA[userId];
     
-    
+    req.sessionId = userId;
+    let redisData = await redis_get(req.sessionId);
+    // 如果没有这个id, 就给这个session设置为空
+    if (!redisData) {
+        redis_set(req.sessionId, {});
+        req.session = {};
+    } else {
+        req.session = redisData;
+    }
     getPostData(req).then(async (postData) => {
-        
         // 拿到前端交给后端的参数, 并放入到请求body里面
         req.body = postData;
         // 博客路由
