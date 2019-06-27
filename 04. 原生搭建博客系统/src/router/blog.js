@@ -61,7 +61,7 @@ const handleBlogRouter = async (req, res) => {
     }
     // 删除-博客-内容
     if (method === 'POST' && path === '/api/blog/del') {
-        const {affectedRows} =await delBlog(req.body);
+        const {affectedRows} = await delBlog(req.body);
         if (affectedRows) {
             return new SuccessModule('删除成功!');
         } else {
