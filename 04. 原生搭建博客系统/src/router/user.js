@@ -5,13 +5,7 @@ const queryString = require('querystring');
 
 const {login} = require('../controller/user');
 const {SuccessModule, ErrorModule} = require('../module/resModule/baseModule');
-
-// 获取cookie过期时间
-const getCookieExpires = () => {
-    const d = new Date();
-    d.setTime(d.getTime() + (24 * 60 * 60 * 1000));
-    return d.toLocaleString();
-};
+const {redis_set} = require('../db/Redis');
 
 const handleUserRouter = async (req, res) => {
     const method = req.method;
@@ -36,6 +30,8 @@ const handleUserRouter = async (req, res) => {
         req.session.username = result[0].username;
         req.session.password = result[0].password;
         console.log(`req.session`, req.session);
+        // 登录之后将对应的id设置session, 这样下次进来的时候, 先去查id有没有, 有的话, 就不用登陆, 直接进入
+        redis_set(req.sessionId, req.session);
         return new SuccessModule(result[0], '登录成功');
         
     }

@@ -11,6 +11,14 @@ const {
     delBlog
 } = require('../controller/blog');
 
+// 验证是否登录
+const checkLogin = (req) => {
+    if (!req.session.username) {
+        return Promise.resolve(new ErrorModule('登录失败'));
+    }
+};
+
+
 const handleBlogRouter = async (req, res) => {
     const method = req.method;
     const url = req.url;
@@ -18,7 +26,7 @@ const handleBlogRouter = async (req, res) => {
     const query = queryString.parse(url.split('?')[1]);
     
     // 拿到登录的作者, 然后将作者放入到请求体里面, 方便其他地方调用
-    let author = 'lisi';
+    let author = req.session.username;
     req.body.author = author;
     
     // 获取-博客-列表
@@ -38,6 +46,13 @@ const handleBlogRouter = async (req, res) => {
     }
     // 新建-博客-内容
     if (method === 'POST' && path === '/api/blog/new') {
+        
+        const isLogin = checkLogin(req);
+        // 如果未登录,
+        if (isLogin) {
+            return isLogin;
+        }
+        
         // 将前端的数据交给后端, 后端返回数据
         // 我们需要将 content 博客内容, title 博客标题, author 博客作者传给后端
         // 这里需要注意的一点是, author是登录之后才可以拿到
@@ -52,6 +67,12 @@ const handleBlogRouter = async (req, res) => {
     }
     // 更新-博客-内容
     if (method === 'POST' && path === '/api/blog/update') {
+        const isLogin = checkLogin(req);
+        // 如果未登录,
+        if (isLogin) {
+            return isLogin;
+        }
+        
         const {affectedRows} = await updateBlog(req.body);
         if (affectedRows) {
             return new SuccessModule('更新成功');
@@ -61,6 +82,13 @@ const handleBlogRouter = async (req, res) => {
     }
     // 删除-博客-内容
     if (method === 'POST' && path === '/api/blog/del') {
+        
+        const isLogin = checkLogin(req);
+        // 如果未登录,
+        if (isLogin) {
+            return isLogin;
+        }
+        
         const {affectedRows} = await delBlog(req.body);
         if (affectedRows) {
             return new SuccessModule('删除成功!');
