@@ -4,7 +4,7 @@
 const queryString = require('querystring');
 const {blog} = require('../controller');
 
-module.exports = (req, res) => {
+module.exports = async (req, res) => {
 // 请求的方式
     const POST = req.method === 'POST';
     const GET = req.method === 'GET';
@@ -17,7 +17,7 @@ module.exports = (req, res) => {
     const {getBlogList, getBlogDetail, newBlog, updateBlog, deleteBlog} = blog;
     // 博客列表
     if (GET && path === '/api/blog/list') {
-        const result = getBlogList();
+        const result = await getBlogList();
         console.log(`result`, result);
         return result;
     }

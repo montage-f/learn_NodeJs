@@ -2,15 +2,13 @@
  * Created by montage_fz on 2019-06-27
  */
 
-const queryBlogTable = require('../db/mySql');
-// console.log(`queryBlogTable:${queryBlogTable}`);
+const queryBlogTable = require('../db/connectMySql');
 
-const getBlogList = () => {
-    return [
-        {
-            message: '我是博客列表'
-        }
-    ];
+const getBlogList = async () => {
+    const sql = `select * from users`;
+    let result = await queryBlogTable(sql);
+    console.log(result);
+    return result;
 };
 
 const getBlogDetail = () => {
