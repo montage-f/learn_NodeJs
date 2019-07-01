@@ -46,16 +46,16 @@ module.exports = async (req, res) => {
         req.session = {};
     } else {
         req.session = sessionInfo;
+        console.log(`session:${req.session}`);
     }
     
-    // users
+    // 拿到post请求的参数
     const body = await postBody(req);
     if (body) {
         req.body = body;
     } else {
         req.body = {};
     }
-    
     const routerUser = await router.user(req, res);
     if (routerUser) {
         if (hasCookie) {
@@ -66,9 +66,9 @@ module.exports = async (req, res) => {
         return;
     }
     
-    
     // blog
     const routerBlog = await router.blog(req, res);
+    
     if (routerBlog) {
         if (hasCookie) {
             res.setHeader('Set-Cookie', `userId=${userId};path=/;httpOnly;`);
