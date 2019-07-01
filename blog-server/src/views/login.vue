@@ -46,12 +46,15 @@
             async submitForm() {
                 let isFormRole = this.$formRule('ruleForm');
                 if (isFormRole) {
-                    let {status, message} = await this.$axios.post('/api/user/login', {
+                    let {status, message, data} = await this.$axios.post('/api/user/login', {
                         username: this.ruleForm.username,
                         password: this.ruleForm.password
                     });
+
                     if (status === 200) {
                         this.$message.success(message);
+                        this.$localStore.set('userInfo', data);
+                        this.$router.push('/');
                         return;
                     }
                     this.$message.error(message);
@@ -79,6 +82,7 @@
             height: 35%;
             border: 1px solid #ccc;
             padding: 20px;
+            text-align: center;
 
             .button {
                 width: 100%;

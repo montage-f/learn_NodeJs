@@ -3,7 +3,13 @@
  */
 import axios from './axios';
 import formRule from './formRule';
+import localStore from './localStore';
 
+export {
+    axios,
+    formRule,
+    localStore
+};
 export default (vue) => {
     vue.prototype.$axios = axios;
     // 表单校验
@@ -13,5 +19,6 @@ export default (vue) => {
      *@return {Boolean}
      */
     vue.prototype.$formRule = formRule;
+    vue.prototype.$localStore = localStore;
     
 }

@@ -31,7 +31,7 @@ module.exports = async (req, res) => {
         req.cookie[key] = value;
     });
     // 如果没有cookie就给他设置一个cookie
-    const userId = req.cookie['userId'] || `${Date.now()}_${Math.random()}`;
+    let userId = req.userId = req.cookie['userId'] || `${Date.now()}_${Math.random()}`;
     let hasCookie = false;
     if (!req.cookie['userId']) {
         redis_set(userId, {});
@@ -40,7 +40,6 @@ module.exports = async (req, res) => {
         hasCookie = true;
         
     }
-    
     const sessionInfo = await redis_get(userId);
     if (!sessionInfo) {
         req.session = {};

@@ -28,9 +28,9 @@ class SuccessInfo extends baseInfo {
 }
 
 class ErrorInfo extends baseInfo {
-    constructor(data, message) {
+    constructor(data, message, status) {
         super(data, message);
-        this.status = 404;
+        this.status = status || 400;
     }
 }
 

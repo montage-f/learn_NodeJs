@@ -38,8 +38,12 @@ module.exports = async (req, res) => {
             req.session.username = result[0].username;
             req.session.author = result[0].author;
             // 将登陆信息存入到session中
+            console.log(req.userId);
             redis_set(req.userId, req.session);
-            return new SuccessInfo(result[0], '登陆成功');
+            return new SuccessInfo({
+                ...result[0],
+                userId: req.userId
+            }, '登陆成功');
         }
         return new ErrorInfo('该用户尚未注册!');
     }
