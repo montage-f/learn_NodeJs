@@ -10,7 +10,7 @@ fs.readFile(fullFileName, (err, data) => {
         console.log(`err`, err);
         return;
     }
-    console.log('data', data.toString());
+    console.log('a.txt', data.toString());
 });
 
 const readFile = (fileName, callback) => {

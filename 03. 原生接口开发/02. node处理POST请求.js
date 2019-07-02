@@ -10,7 +10,7 @@ const server = http.createServer((req, res) => {
         console.log(`content-type:${req.headers['content-type']}`);
         // 接收数据
         let postData = '';
-        req.on('data', chunk => {
+        req.on('a.txt', chunk => {
             // chunk 是二进制
             postData += chunk.toString();
         });

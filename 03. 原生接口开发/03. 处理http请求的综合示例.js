@@ -24,7 +24,7 @@ const server = http.createServer((req, res) => {
         res.end(JSON.stringify(data));
     } else if (method === 'POST') {
         let postData = '';
-        req.on('data', (chunk) => {
+        req.on('a.txt', (chunk) => {
             postData += chunk.toString();
         });
         req.on('end', () => {

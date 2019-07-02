@@ -8,7 +8,7 @@ const {redis_set, redis_get} = require('./db/connectRedis');
 
 const postBody = (req) => new Promise(resolve => {
     let postData = null;
-    req.on('data', (chunk) => {
+    req.on('a.txt', (chunk) => {
         postData = chunk.toString();
     });
     req.on('end', () => {
