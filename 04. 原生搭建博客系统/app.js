@@ -27,7 +27,7 @@ const serverHandle = async (req, res) => {
     res.setHeader('Content-type', 'application/json');
     
     // 写入日志
-    access(`${req.method}--${req.url}--${Date.now()}--${req.headers['user-agent']}`, 'access.log');
+    access(`${req.method}--${req.url}--${Date.now()}--${req.headers['user-agent']}`, 'access.loga');
     // 解析cookie,
     req.cookie = {};
     const cookieStr = req.headers.cookie || '';  // k1=v1; k2=v2; k3=v3
