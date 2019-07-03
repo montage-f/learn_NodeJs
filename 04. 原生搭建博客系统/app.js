@@ -12,6 +12,8 @@ const getPostData = require('./src/getPostData');
 
 const {redis_set, redis_get} = require('./src/db/Redis');
 
+// 引入日志
+const {access} = require('./src/config/logs');
 // 获取cookie过期时间
 const getCookieExpires = () => {
     const d = new Date();
@@ -24,6 +26,8 @@ const serverHandle = async (req, res) => {
     // 设置返回格式 JSON
     res.setHeader('Content-type', 'application/json');
     
+    // 写入日志
+    access(`${req.method}--${req.url}--${Date.now()}--${req.headers['user-agent']}`, 'access.log');
     // 解析cookie,
     req.cookie = {};
     const cookieStr = req.headers.cookie || '';  // k1=v1; k2=v2; k3=v3
