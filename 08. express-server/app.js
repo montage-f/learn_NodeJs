@@ -6,6 +6,7 @@ const logger = require('morgan'); // 生成日志, 写日志
 
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
+const blogsRouter = require('./routes/blogs');
 
 const app = express();
 
@@ -22,7 +23,7 @@ app.use(express.static(path.join(__dirname, 'public'))); // 将静态文件返�
 // 给路由设置跟路径
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
+app.use('/blog', blogsRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
     next(createError(404));
