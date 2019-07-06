@@ -4,10 +4,28 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
-    res.json({
-        data: '我是blogs路由'
-    });
+const {
+    successInfo: {
+        SuccessInfo,
+        ErrorInfo
+    }
+} = require('../middleware');
+
+const {
+    getList,
+    getDetail,
+    newBlog,
+    updateBlog,
+    delBlog
+} = require('../controller/blog');
+
+router.get('/list', async (req, res, next) => {
+    console.log(req.headers.cookie.split(';')[1]);
+    const {author, keyword} = req.query;
+    const data = await getList(author, keyword);
+    res.json(
+        new SuccessInfo(data)
+    );
     
 });
 
