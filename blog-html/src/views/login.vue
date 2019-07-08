@@ -46,13 +46,13 @@
             async submitForm() {
                 let isFormRole = this.$formRule('ruleForm');
                 if (isFormRole) {
-                    let {status, message, data} = await this.$axios.post('/api/user/login', {
+                    let {status, msg, data} = await this.$axios.post('/api/user/login', {
                         username: this.ruleForm.username,
                         password: this.ruleForm.password
                     });
 
                     if (status === 200) {
-                        this.$message.success(message);
+                        this.$message.success(msg);
                         this.$localStore.set('userInfo', data);
                         this.$router.push('/');
                         return;

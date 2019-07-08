@@ -35,8 +35,11 @@ router.beforeEach((to, from, next) => {
         next();
         return;
     }
-    if (to !== '/login' && !userInfo) {
+    
+    if (to.path !== '/login' && !userInfo) {
         next('/login');
+        return;
     }
+    next();
 });
 export default router;
